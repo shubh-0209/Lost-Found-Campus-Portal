@@ -1,0 +1,111 @@
+/* ===== Home Page ===== */
+
+.home {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(to right, #f8fafc, #eef2ff);
+  }
+  
+  .hero h1 {
+    font-size: 42px;
+    color: #0f172a;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 18px;
+    color: #475569;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Buttons */
+  .primary-btn {
+    background: #2563eb;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s ease;
+  }
+  
+  .primary-btn:hover {
+    background: #1d4ed8;
+  }
+  
+  .secondary-btn {
+    border: 1px solid #2563eb;
+    color: #2563eb;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s ease;
+  }
+  
+  .secondary-btn:hover {
+    background: #2563eb;
+    color: white;
+  }
+  
+  /* ===== How It Works Section ===== */
+
+.how-it-works {
+    text-align: center;
+    padding: 80px 20px;
+    background: #ffffff;
+  }
+  
+  .how-it-works h2 {
+    font-size: 32px;
+    margin-bottom: 50px;
+    color: #0f172a;
+  }
+  
+  .steps {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .step {
+    max-width: 300px;
+    padding: 20px;
+  }
+  
+  .step-number {
+    width: 45px;
+    height: 45px;
+    background: #2563eb;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    font-weight: bold;
+  }
+  
+  .step h3 {
+    margin-bottom: 12px;
+    color: #1e293b;
+  }
+  
+  .step p {
+    color: #475569;
+    font-size: 14px;
+  }
+  
