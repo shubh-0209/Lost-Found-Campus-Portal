@@ -9,6 +9,9 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+const itemRoutes = require("./src/routes/itemRoutes");
+
+app.use("/api/items", itemRoutes);
 // const itemRoutes = require("./routes/itemRoutes");
 
 // app.use("/api/items", itemRoutes);

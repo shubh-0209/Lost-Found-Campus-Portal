@@ -11,7 +11,7 @@ const FilterSidebar = ({ setFilters }) => {
   const resetFilters = () => {
     setCategory("");
     setStatus("");
-    setFilters({});
+    setFilters({}); 
   };
 
   return (

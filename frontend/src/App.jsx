@@ -1,32 +1,30 @@
 import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "./context/authContext";
-
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import BrowseItems from "./pages/BrowseItems";
-
+import ReportItem from "./pages/ReportItem";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+
 
 function App() {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   return (
     <>
-      {/* Show Navbar only if logged in */}
       {isAuthenticated && <Navbar />}
 
       <Routes>
-        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
+
         <Route
           path="/"
           element={
@@ -41,6 +39,15 @@ function App() {
           element={
             <PrivateRoute>
               <BrowseItems />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/report"
+          element={
+            <PrivateRoute>
+              <ReportItem />
             </PrivateRoute>
           }
         />

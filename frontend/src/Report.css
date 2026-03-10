@@ -1,0 +1,41 @@
+.report-container{
+    display:flex;
+    justify-content:center;
+    padding:40px;
+    }
+    
+    .report-card{
+    width:600px;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .report-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    }
+    
+    .form-group{
+    display:flex;
+    flex-direction:column;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    }
+    
+    .report-btn{
+    background:#4CAF50;
+    color:white;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    }

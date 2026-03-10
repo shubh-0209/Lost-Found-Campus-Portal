@@ -1,42 +1,50 @@
-import { createContext, useState, useEffect } from "react";
-import React from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
-const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes
-
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const loginTime = localStorage.getItem("loginTime");
 
-    if (user && loginTime) {
-      const currentTime = Date.now();
+    const storedUser = localStorage.getItem("user");
 
-      if (currentTime - loginTime < SESSION_TIMEOUT) {
-        setIsAuthenticated(true);
-      } else {
-        logout(); 
-      }
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
+
+    setLoading(false);
+
   }, []);
 
-  const login = (userData) => {
+  const login = (userData, token) => {
+
     localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("loginTime", Date.now());
-    setIsAuthenticated(true);
+    localStorage.setItem("token", token);
+
+    setUser(userData);
   };
 
   const logout = () => {
+
     localStorage.removeItem("user");
-    localStorage.removeItem("loginTime");
-    setIsAuthenticated(false);
+    localStorage.removeItem("token");
+
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        loading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

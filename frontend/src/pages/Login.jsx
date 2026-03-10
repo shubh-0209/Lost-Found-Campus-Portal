@@ -13,6 +13,8 @@ const { login } = useContext(AuthContext);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -33,6 +35,7 @@ const { login } = useContext(AuthContext);
     
       if (response.ok) {
         login(data.user, data.token); 
+        localStorage.setItem("lastActivity", Date.now());
         toast.success("Login Successful 🎉");
 
         setTimeout(() => {
