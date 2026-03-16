@@ -11,6 +11,7 @@ import ReportItem from "./pages/ReportItem";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
+import ItemDetails from "./pages/ItemDetails";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/item/:id" element={<ItemDetails />} />
       </Routes>
 
       <ToastContainer position="top-right" autoClose={3000} />

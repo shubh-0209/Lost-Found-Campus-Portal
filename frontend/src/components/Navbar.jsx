@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import "../index.css";
@@ -6,6 +6,7 @@ import "../index.css";
 function Navbar() {
   const { user, logout, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -20,7 +21,15 @@ function Navbar() {
           Campus Lost & Found
         </NavLink>
 
-        <div className="nav-links">
+        {/* Hamburger */}
+        <div
+          className="hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </div>
+
+        <div className={`nav-links ${menuOpen ? "active" : ""}`}>
 
           <NavLink to="/browse" className="nav-link">
             Browse
@@ -42,17 +51,20 @@ function Navbar() {
             </>
           ) : (
             <>
-              <span className="nav-user" style={{ color: "gray", fontWeight: "bold" }}>
-  {user?.email}
-</span>
+              <span
+                className="nav-user"
+                style={{ color: "gray", fontWeight: "bold" }}
+              >
+                {user?.email}
+              </span>
 
               <button onClick={handleLogout} className="nav-button">
                 Logout
               </button>
             </>
           )}
-
         </div>
+
       </div>
     </nav>
   );

@@ -1,0 +1,76 @@
+.details-container {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .details-card {
+    display: flex;
+    gap: 40px;
+    max-width: 900px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+  }
+  
+  .details-image img {
+    width: 350px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .details-info {
+    flex: 1;
+  }
+  
+  .details-title {
+    margin-bottom: 10px;
+  }
+  
+  .details-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 15px;
+    color: white;
+  }
+  
+  .lost {
+    background: #ff4d4f;
+  }
+  
+  .found {
+    background: #52c41a;
+  }
+  
+  .details-meta {
+    margin: 8px 0;
+    color: #555;
+  }
+  
+  .details-desc {
+    margin-top: 15px;
+  }
+  
+  .contact-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #1677ff;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .contact-btn:hover {
+    background: #0958d9;
+  }
+  
+  .loading {
+    text-align: center;
+    margin-top: 100px;
+  }
