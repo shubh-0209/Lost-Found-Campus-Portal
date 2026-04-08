@@ -12,7 +12,7 @@
 .nav-container {
   max-width: 1200px;
   margin: auto;
-  padding: 16px 30px;
+  padding: 12px 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -160,4 +160,95 @@
   .nav-links.active {
     display: flex;
   }
+}
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* IMAGE */
+.card-img img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* BODY */
+.card-body {
+  padding: 15px;
+}
+
+/* TITLE */
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* META */
+.card-meta {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+/* DESCRIPTION */
+.card-desc {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* BADGE */
+.card-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.card-badge.lost {
+  background: #e74c3c;
+}
+
+.card-badge.found {
+  background: #2ecc71;
+}
+
+/* FOOTER */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* DATE */
+.card-date {
+  font-size: 13px;
+  color: #555;
+}
+
+/* BUTTON */
+.card-btn {
+  background: #3498db;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.card-btn:hover {
+  background: #2980b9;
 }

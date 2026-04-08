@@ -1,23 +1,52 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
+
 const connectDB = require("./src/config/db");
+const requestRoutes = require("./src/routes/requestRoutes");
+const itemRoutes = require("./src/routes/itemRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+
+// 🔥 socket setup import
+const { setupSocket } = require("./socket");
 
 const app = express();
 
+// DB connection
 connectDB();
 
-app.use(cors());
+// middleware
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 app.use(express.json());
-const itemRoutes = require("./src/routes/itemRoutes");
 
+// routes
+app.use("/api/requests", requestRoutes);
 app.use("/api/items", itemRoutes);
-// const itemRoutes = require("./routes/itemRoutes");
+app.use("/api/auth", authRoutes);
 
-// app.use("/api/items", itemRoutes);
+// 🔥 IMPORTANT: create HTTP server
+const server = http.createServer(app);
 
-app.use("/api/auth", require("./src/routes/authRoutes"));
+// 🔥 attach socket.io
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
 
-app.listen(5000, () => {
+// 🔥 initialize socket logic
+setupSocket(io);
+
+// 🔥 make io available in routes/controllers
+app.set("io", io);
+
+// start server
+server.listen(5000, () => {
   console.log("Server running on port 5000");
 });

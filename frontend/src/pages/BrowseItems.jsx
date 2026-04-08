@@ -46,6 +46,7 @@ const BrowseItems = () => {
         currentPage: data.currentPage,
         totalPages: data.totalPages
       });
+      console.log("Fetched Items:", data);
 
       setLoading(false);
     } catch (err) {

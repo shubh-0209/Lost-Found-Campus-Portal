@@ -1,0 +1,93 @@
+.notifications-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .notifications-header {
+    margin-bottom: 20px;
+  }
+  
+  .notifications-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  /* LIST */
+  .notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  /* CARD */
+  .notification-card {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .notification-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  /* ICON */
+  .icon {
+    margin-right: 12px;
+    color: #2563eb;
+  }
+  
+  /* CONTENT */
+  .content {
+    flex: 1;
+  }
+  
+  .message {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  .time {
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  /* UNREAD */
+  .unread {
+    background: #f9fafb;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: #2563eb;
+    border-radius: 50%;
+  }
+  
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    margin-top: 80px;
+    color: #6b7280;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .notifications-container {
+      padding: 10px;
+    }
+  
+    .notification-card {
+      padding: 12px;
+    }
+  
+    .message {
+      font-size: 14px;
+    }
+  }

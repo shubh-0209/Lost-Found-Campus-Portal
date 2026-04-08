@@ -1,55 +1,66 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../index.css";
 
 const ItemCard = ({ item }) => {
-  return (
-    <div className="item-card">
+const title =
+item?.itemName && item.itemName.trim() !== ""
+? item.itemName
+: "Unnamed Item";
 
-      <img
-        src={item.image || "https://via.placeholder.com/300"}
-        alt={item.itemName}
-        className="item-image"
-      />
+const hasImage = item?.image && item.image.trim() !== "";
+    const type = item?.type || item?.status || "";
 
-      <div className="item-content">
 
-        <h3 className="item-title">
-          {item.itemName}
-        </h3>
+return ( <div className="card">
+{hasImage && ( <div className="card-img"> <img src={item.image} alt={title} /> </div>
+)}
 
-        <div className="item-meta">
-          {item.category} • 📍 {item.location}
-        </div>
+```
+  <div className="card-body">
+    <h3 className="card-title">{title}</h3>
 
-        <p className="item-desc">
-          {item.description?.slice(0, 60)}...
-        </p>
+    <p className="card-meta">
+      {item?.category || "Unknown"} • 📍 {item?.location || "Unknown"}
+    </p>
 
-        <span
-          className={`badge ${
-            item.type === "lost" ? "badge-lost" : "badge-found"
-          }`}
-        >
-          {item.type.toUpperCase()}
-        </span>
+    {item?.description && (
+      <p className="card-desc">
+        {item.description.length > 60
+          ? item.description.slice(0, 60) + "..."
+          : item.description}
+      </p>
+    )}
 
-        <div className="item-footer">
 
-          <span className="item-date">
-            📅 {new Date(item.createdAt).toLocaleDateString()}
-          </span>
+<span
+  className={`card-badge ${
+    type.toLowerCase() === "lost"
+      ? "lost"
+      : type.toLowerCase() === "found"
+      ? "found"
+      : "unknown"
+  }`}
+>
+  {type ? type.toUpperCase() : "UNKNOWN"}
+</span>
 
-          <Link to={`/item/${item._id}`}>
-            <button className="view-btn">
-              View Details
-            </button>
-          </Link>
+    <div className="card-footer">
+      <span className="card-date">
+        📅{" "}
+        {item?.createdAt
+          ? new Date(item.createdAt).toLocaleDateString()
+          : "N/A"}
+      </span>
 
-        </div>
-
-      </div>
+      <Link to={`/item/${item?._id}`}>
+        <button className="card-btn">View Details</button>
+      </Link>
     </div>
-  );
+  </div>
+</div>
+
+);
 };
 
 export default ItemCard;
