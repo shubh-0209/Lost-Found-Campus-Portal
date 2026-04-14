@@ -1,29 +1,19 @@
-const onlineUsers = new Map();
-
 const setupSocket = (io) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
-    socket.on("register", (userId) => {
-      onlineUsers.set(userId, socket.id);
+    socket.on("join", (userId) => {
+      socket.join(userId);
     });
 
     socket.on("disconnect", () => {
-      for (let [userId, socketId] of onlineUsers.entries()) {
-        if (socketId === socket.id) {
-          onlineUsers.delete(userId);
-          break;
-        }
-      }
+      console.log("User disconnected:", socket.id);
     });
   });
 };
 
 const sendNotification = (io, userId, notification) => {
-  const socketId = onlineUsers.get(userId);
-  if (socketId) {
-    io.to(socketId).emit("notification", notification);
-  }
+  io.to(userId).emit("notification", notification);
 };
 
 module.exports = { setupSocket, sendNotification };

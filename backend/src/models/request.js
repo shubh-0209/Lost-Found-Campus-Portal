@@ -1,25 +1,29 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const requestSchema = new mongoose.Schema({
-  itemId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Item",
+const requestSchema = new mongoose.Schema(
+  {
+    user: { // person who is claiming
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    foundItemId: { // item being claimed
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Item",
+      required: true,
+    },
+    ownerId: { // item owner
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending",
+    },
   },
+  { timestamps: true }
+);
 
-  requesterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  ownerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  status: {
-    type: String,
-    default: "pending", // pending | accepted | rejected
-  },
-}, { timestamps: true });
-
-module.exports = mongoose.model("Request", requestSchema);
+export default mongoose.model("Request", requestSchema);

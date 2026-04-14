@@ -34,15 +34,33 @@ const { login } = useContext(AuthContext);
       console.log(data);
     
       if (response.ok) {
-        login(data.user, data.token); 
+        console.log("LOGIN RESPONSE:", data); // keep this once
+      
+        // ✅ SAFE EXTRACTION
+        const token = data?.token;
+      
+        if (!token) {
+          toast.error("Token missing from server");
+          return;
+        }
+      
+        // ✅ STORE CLEANLY
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify({
+          _id: data._id,
+          email: data.email,
+          name: data.name
+        }));
+      
+        login(data, data.token);
         localStorage.setItem("lastActivity", Date.now());
+      
         toast.success("Login Successful 🎉");
-
+      
         setTimeout(() => {
           navigate("/");
         }, 1500);
-    
-      } else {
+      }else {
         toast.error(data.message || "Invalid credentials");
       }
     

@@ -2,33 +2,30 @@ const mongoose = require("mongoose");
 
 const claimRequestSchema = new mongoose.Schema(
   {
-    lostItem: {
+    reportedItem: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Item",
       required: true,
     },
-
-    foundItem: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Item",
-      required: true,
-    },
-
-    requesterEmail: {
+    claimantEmail: {
       type: String,
       required: true,
     },
-
-    ownerEmail: {
+    reporterEmail: {
       type: String,
       required: true,
     },
-
+    answers: {
+      type: Object,
+      required: true, // dynamic fields filled by claimant
+    },
     status: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
     },
+    notes: { type: String },
+    image: { type: String }, // optional proof image
   },
   { timestamps: true }
 );

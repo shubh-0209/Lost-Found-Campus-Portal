@@ -7,6 +7,8 @@ import Pagination from "../components/Pagination";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
 import "../Browse.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
 
 
 
@@ -19,35 +21,61 @@ const BrowseItems = () => {
     currentPage: 1,
     totalPages: 1
   });
+  const { user } = useContext(AuthContext);
 
 
   useEffect(() => {
-    fetchItems();
+    const delayDebounce = setTimeout(() => {
+      fetchItems();
+    }, 400); // 🔥 debounce
+  
+    return () => clearTimeout(delayDebounce);
   }, [filters, search, pageData.currentPage]);
 
+  
+  
   const fetchItems = async () => {
     try {
       setLoading(true);
-
-      const queryParams = new URLSearchParams({
-        search,
-        page: pageData.currentPage,
-        ...filters
-      });
-
-      const res = await fetch(
-        `http://localhost:5000/api/items?${queryParams}`
-      );
-
+  
+      let url = "";
+  
+      if (search && search.trim() !== "") {
+        // 🔍 SEARCH API
+        const queryParams = new URLSearchParams({
+          q: search,
+          ...filters,
+        });
+  
+        url = `http://localhost:5000/api/items/search?${queryParams}`;
+      } else {
+        // 📦 NORMAL BROWSE
+        const queryParams = new URLSearchParams({
+          page: pageData.currentPage,
+          ...filters,
+        });
+  
+        url = `http://localhost:5000/api/items?${queryParams}`;
+      }
+  
+      const res = await fetch(url);
       const data = await res.json();
-
-      setItems(data.items);
-      setPageData({
-        currentPage: data.currentPage,
-        totalPages: data.totalPages
-      });
-      console.log("Fetched Items:", data);
-
+  
+      // 🔥 handle both APIs
+      if (search) {
+        setItems(data);
+        setPageData({
+          currentPage: 1,
+          totalPages: 1,
+        });
+      } else {
+        setItems(data.items);
+        setPageData({
+          currentPage: data.currentPage,
+          totalPages: data.totalPages,
+        });
+      }
+  
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -60,7 +88,7 @@ const BrowseItems = () => {
       {/* <Navbar /> */}
 
       <div className="browse-container">
-        <h2 className="page-title">Browse Lost & Found Items</h2>
+        {/* <h2 className="page-title">Browse Lost & Found Items</h2> */}
 
         <SearchBar setSearch={setSearch} />
 
@@ -75,7 +103,7 @@ const BrowseItems = () => {
             ) : (
               <div className="grid">
                 {items.map((item) => (
-                  <ItemCard key={item._id} item={item} />
+                  <ItemCard key={item._id} item={item} currentUser={user} />
                 ))}
               </div>
             )}

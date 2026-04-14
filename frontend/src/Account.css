@@ -1,0 +1,89 @@
+.account-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.account-header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.account-section h3 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.account-card {
+  display: flex;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  padding: 10px;
+  gap: 15px;
+  align-items: center;
+}
+
+.account-card-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.account-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 🔥 The Blur Logic for Account Page */
+.blur-img {
+  filter: blur(8px);
+  transform: scale(1.1);
+}
+
+.account-card-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.status-badge.pending { background: #fff3cd; color: #856404; }
+.status-badge.claimed { background: #d4edda; color: #155724; }
+
+.view-link {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .account-grid { grid-template-columns: 1fr; }
+}

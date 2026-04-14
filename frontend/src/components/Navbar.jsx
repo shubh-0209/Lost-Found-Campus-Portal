@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import { socket } from "../socket";
 import "../index.css";
+import { Bell } from "lucide-react";
 
 function Navbar() {
   const { user, logout, isAuthenticated } = useContext(AuthContext);
@@ -10,6 +11,7 @@ function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  
 
   const handleLogout = () => {
     logout();
@@ -19,23 +21,33 @@ function Navbar() {
   // 🔔 Fetch Notifications
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/notifications/${user._id}`
-      );
-  
+      // Added Authorization header to prevent 401 errors
+      const token = localStorage.getItem("token"); 
+      const res = await fetch(`http://localhost:5000/api/notifications`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!res.ok) {
+        console.error("Server returned an error:", res.status);
+        return;
+      }
+
       const data = await res.json();
       setNotifications(data || []);
     } catch (err) {
-      console.error(err);
+      console.error("Fetch error:", err);
     }
   };
 
-  // 📥 Initial fetch
+  // 📥 Initial fetch logic wrapped in useEffect to prevent infinite loops
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && user?._id) {
       fetchNotifications();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user?._id]); // Only runs when auth state or user ID changes
 
   // 🔥 Real-time updates
   useEffect(() => {
@@ -52,23 +64,18 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-container">
-
         {/* LOGO */}
         <NavLink to="/" className="logo">
           Campus Lost & Found
         </NavLink>
 
         {/* HAMBURGER */}
-        <div
-          className="hamburger"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           ☰
         </div>
 
         {/* NAV LINKS */}
         <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-
           <NavLink to="/browse" className="nav-link">
             Browse
           </NavLink>
@@ -90,23 +97,31 @@ function Navbar() {
           ) : (
             <>
               {/* 🔔 NOTIFICATION BELL */}
-              <div
-                className="notif-icon"
-                onClick={() => navigate("/notifications")}
-                style={{ cursor: "pointer", position: "relative" }}
-              >
-                🔔
-                {unreadCount > 0 && (
-                  <span className="notif-badge">
-                    {unreadCount}
-                  </span>
-                )}
-              </div>
+              <div className="nav-icons">
+  <div className="notification-wrapper" onClick={() => navigate("/notifications")}>
+    <Bell size={22} />
+
+    {unreadCount > 0 && (
+      <span className="notification-badge">
+        {unreadCount > 9 ? "9+" : unreadCount}
+      </span>
+    )}
+  </div>
+</div>
 
               {/* USER */}
-              <span className="nav-user" style={{ color: "grey" }}>
-                {user?.email}
-              </span>
+              <div className="nav-right">
+                {user && (
+                  <Link
+                    to="/account"
+                    className="user-chip"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <span className="avatar">👤</span>
+                    <span className="email">{user.email}</span>
+                  </Link>
+                )}
+              </div>
 
               {/* LOGOUT */}
               <button onClick={handleLogout} className="nav-button">

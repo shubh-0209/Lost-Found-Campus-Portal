@@ -335,3 +335,52 @@
     width: 100%;
   }
 }
+
+/* Container for the image to prevent blur overflow */
+.details-image-wrapper, .match-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+.details-image-wrapper {
+  width: 100%;
+  height: 350px;
+}
+
+.match-image-wrapper {
+  width: 120px;
+  height: 120px;
+}
+
+/* 🔥 The Blur Logic */
+.details-img-blurred, .match-image-blurred {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(15px); /* Strong blur */
+  transform: scale(1.1); /* Hides white edges caused by blur */
+  transition: filter 0.3s ease;
+}
+
+/* Overlay text for found items */
+.blur-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Hover effect to slightly unblur (Optional) */
+.details-card:hover .details-img-blurred {
+  filter: blur(5px);
+}

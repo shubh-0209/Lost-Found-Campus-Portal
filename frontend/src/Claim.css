@@ -1,0 +1,198 @@
+/* Base Reset */
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Container */
+  .claim-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f6fb;
+    padding: 16px;
+  }
+  
+  /* Card */
+  .claim-card {
+    width: 100%;
+    max-width: 520px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: 0.2s ease;
+  }
+  
+  /* Title */
+  .claim-card h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 6px;
+  }
+  
+  /* Subtitle */
+  .subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 18px;
+  }
+  
+  /* Match Score */
+  .match-score {
+    background: #eef4ff;
+    border: 1px solid #dbeafe;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Form */
+  .claim-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  /* Form Group */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  /* Labels */
+  .form-group label {
+    font-size: 12.5px;
+    margin-bottom: 5px;
+    color: #444;
+    font-weight: 500;
+  }
+  
+  /* Inputs */
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    transition: 0.2s;
+  }
+  
+  /* Focus */
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #4f46e5;
+    background: #fff;
+    outline: none;
+  }
+  
+  /* Textarea */
+  .form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+  
+  /* Disabled */
+  .form-group input:disabled {
+    background: #f1f1f1;
+    color: #777;
+  }
+  
+  /* Button */
+  .claim-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background: #4f46e5;
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .claim-btn:hover {
+    background: #4338ca;
+  }
+  
+  .claim-btn:disabled {
+    background: #a5b4fc;
+    cursor: not-allowed;
+  }
+  
+  /* Loading */
+  .loading {
+    text-align: center;
+    font-size: 15px;
+    color: #555;
+  }
+  
+  /* ------------------ RESPONSIVE ------------------ */
+  
+  /* Tablets */
+  @media (max-width: 768px) {
+    .claim-container {
+      padding: 12px;
+      align-items: flex-start;
+    }
+  
+    .claim-card {
+      padding: 20px;
+    }
+  
+    .claim-card h2 {
+      font-size: 20px;
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    .claim-container {
+      padding: 10px;
+    }
+  
+    .claim-card {
+      padding: 16px;
+      border-radius: 10px;
+    }
+  
+    .claim-card h2 {
+      font-size: 18px;
+    }
+  
+    .subtitle {
+      font-size: 12px;
+    }
+  
+    .form-group label {
+      font-size: 12px;
+    }
+  
+    .form-group input,
+    .form-group textarea {
+      font-size: 13px;
+      padding: 9px;
+    }
+  
+    .claim-btn {
+      font-size: 14px;
+      padding: 11px;
+    }
+  }
+  
+  /* Extra Small Devices */
+  @media (max-width: 350px) {
+    .claim-card {
+      padding: 12px;
+    }
+  
+    .claim-btn {
+      font-size: 13px;
+    }
+  }

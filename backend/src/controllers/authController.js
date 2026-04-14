@@ -1,6 +1,15 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
+// 🔑 token generator
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+};
+
+// ---------------- REGISTER ----------------
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -18,13 +27,12 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
+    // ✅ RETURN TOKEN HERE (IMPORTANT)
     res.status(201).json({
-      message: "User registered successfully",
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
     });
 
   } catch (error) {
@@ -32,8 +40,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-const jwt = require("jsonwebtoken");
-
+// ---------------- LOGIN ----------------
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -48,20 +55,11 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      "secretkey",
-      { expiresIn: "1d" }
-    );
-
     res.status(200).json({
-      message: "Login successful",
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-      token,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
     });
 
   } catch (error) {

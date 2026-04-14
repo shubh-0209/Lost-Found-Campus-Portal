@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "./context/authContext";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
+import Account from "./pages/Account";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -10,7 +11,9 @@ import Register from "./pages/Register";
 import BrowseItems from "./pages/BrowseItems";
 import ReportItem from "./pages/ReportItem";
 import ItemDetails from "./pages/ItemDetails";
-import Notifications from "./pages/Notifications"; // 🔔 NEW
+import Notifications from "./pages/Notifications"; 
+import ClaimItem from "./pages/ClaimItem";
+import ClaimsPage from "./pages/ClaimsPage";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -87,6 +90,15 @@ function App() {
           }
         />
 
+<Route
+  path="/account"
+  element={
+    <PrivateRoute>
+      <Account />
+    </PrivateRoute>
+  }
+/>
+
         {/* 🔔 Notifications Page */}
         <Route
           path="/notifications"
@@ -96,6 +108,16 @@ function App() {
             </PrivateRoute>
           }
         />
+
+<Route
+  path="/claim/:id"
+  element={
+    <PrivateRoute>
+      <ClaimItem />
+    </PrivateRoute>
+  }
+/>
+<Route path="/claims/:itemId" element={<ClaimsPage />} />
 
         <Route path="/item/:id" element={<ItemDetails />} />
       </Routes>
