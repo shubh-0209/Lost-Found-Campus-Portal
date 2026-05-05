@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import "../Claim.css";
 
 const ClaimsPage = () => {
-const { itemId } = useParams();
+  const { itemId } = useParams();
 
-const [claims, setClaims] = useState([]);
-const [loading, setLoading] = useState(true);
+  const [claims, setClaims] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState(null);
 
-const fetchClaims = async () => {
+  // 📥 Fetch claims
+  const fetchClaims = async () => {
     try {
-      console.log("Fetching claims for:", itemId);
-  
       const res = await fetch(
         `http://localhost:5000/api/requests/item/${itemId}`,
         {
@@ -19,26 +21,71 @@ const fetchClaims = async () => {
           },
         }
       );
-  
-      console.log("Response status:", res.status);
-  
+
       const data = await res.json();
-      console.log("Claims data:", data);
-  
-      setClaims(data);
+      setClaims(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to load claims");
     } finally {
       setLoading(false);
     }
   };
-useEffect(() => {
-fetchClaims();
-}, [itemId]);
 
-if (loading) return <p>Loading claims...</p>;
+  useEffect(() => {
+    fetchClaims();
+  }, [itemId]);
 
-if (!claims || claims.length === 0) {
+  // ✅ Accept / Reject
+  const handleAction = async (claimId, status) => {
+    if (processingId === claimId) return; // 🚫 prevent double call
+  
+    setProcessingId(claimId);
+  
+    try {
+      let location = "";
+      let contact = "";
+  
+      if (status === "accepted") {
+        location = prompt("Enter meeting location:");
+        if (!location) return;
+  
+        contact = prompt("Enter contact number:");
+        if (!contact) return;
+      }
+  
+      const res = await fetch(
+        `http://localhost:5000/api/requests/${claimId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ status, location, contact }),
+        }
+      );
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.message || "Error updating claim");
+      }
+  
+      toast.success(`Claim ${status}`);
+      fetchClaims();
+  
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Something went wrong");
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  if (loading) return <p>Loading claims...</p>;
+
+  if (!claims.length) {
     return (
       <div style={{ padding: "20px" }}>
         <h2>No claims yet</h2>
@@ -47,42 +94,57 @@ if (!claims || claims.length === 0) {
     );
   }
 
-return (
-<div style={{ padding: "20px" }}> <h2>Claim Requests</h2>
+  return (
+    <div className="claims-container">
+      {claims.map((claim) => (
+        <div key={claim._id} className="claim-card">
 
+          <div className="claim-header">
+            <div>
+              <p className="label">Claimant</p>
+              <p className="value">{claim.claimantEmail}</p>
+            </div>
 
-  {claims.map((claim) => (
-    <div
-      key={claim._id}
-      style={{
-        border: "1px solid #ddd",
-        padding: "15px",
-        marginBottom: "10px",
-        borderRadius: "8px",
-      }}
-    >
-      <p><strong>Claimant:</strong> {claim.claimantEmail}</p>
+            <span className={`status ${claim.status}`}>
+              {claim.status}
+            </span>
+          </div>
 
-      <p><strong>Status:</strong> {claim.status}</p>
+          <div className="answers-section">
+            <p className="label">Answers</p>
 
-      <div>
-        <strong>Answers:</strong>
-        <pre>{JSON.stringify(claim.answers, null, 2)}</pre>
-      </div>
+            <div className="answers-grid">
+              {Object.entries(claim.answers || {}).map(([key, value]) => (
+                <div key={key} className="answer-item">
+                  <span className="answer-key">{key}</span>
+                  <span className="answer-value">{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-      <button style={{ marginRight: "10px" }}>
-        Accept
-      </button>
+          <div className="actions">
+          <button
+  className="btn accept"
+  disabled={claim.status !== "pending" || processingId === claim._id}
+  onClick={() => handleAction(claim._id, "accepted")}
+>
+  {processingId === claim._id ? "Processing..." : "Accept"}
+</button>
 
-      <button>
-        Reject
-      </button>
+            <button
+              className="btn reject"
+              disabled={claim.status !== "pending"}
+              onClick={() => handleAction(claim._id, "rejected")}
+            >
+              Reject
+            </button>
+          </div>
+
+        </div>
+      ))}
     </div>
-  ))}
-</div>
-
-
-);
+  );
 };
 
 export default ClaimsPage;

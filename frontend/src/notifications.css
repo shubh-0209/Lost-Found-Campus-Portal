@@ -31,10 +31,28 @@
     transition: all 0.2s ease;
     position: relative;
   }
+
+  .non-clickable {
+    cursor: default;
+  }
+  
+  .clickable {
+    cursor: pointer;
+  }
   
   .notification-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .delete-btn {
+    margin-top: 8px;
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
   }
   
   /* ICON */
@@ -90,4 +108,8 @@
     .message {
       font-size: 14px;
     }
+  }
+
+  .clickable {
+    cursor: pointer;
   }

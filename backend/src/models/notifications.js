@@ -9,7 +9,14 @@ const notificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["match", "claim", "message", "system"],
+      enum: [
+        "match",
+        "claim",
+        "message",
+        "system",
+        "claim_accepted",
+        "claim_rejected"
+      ],
       default: "system",
     },
     message: String,
@@ -20,6 +27,13 @@ const notificationSchema = new mongoose.Schema(
     itemId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Item",
+    },
+    location: {
+      type: String,
+    },
+    
+    contact: {
+      type: String,
     },
   },
   { timestamps: true }

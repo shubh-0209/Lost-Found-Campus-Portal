@@ -11,54 +11,69 @@ function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
-  // 🔔 Fetch Notifications
+  // 🔔 Fetch notifications
   const fetchNotifications = async () => {
     try {
-      // Added Authorization header to prevent 401 errors
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
       const res = await fetch(`http://localhost:5000/api/notifications`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!res.ok) {
-        console.error("Server returned an error:", res.status);
+        console.error("Notification fetch failed:", res.status);
         return;
       }
 
       const data = await res.json();
-      setNotifications(data || []);
+      setNotifications(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Fetch error:", err);
     }
   };
 
-  // 📥 Initial fetch logic wrapped in useEffect to prevent infinite loops
+  // 📥 Initial fetch
   useEffect(() => {
     if (isAuthenticated && user?._id) {
       fetchNotifications();
     }
-  }, [isAuthenticated, user?._id]); // Only runs when auth state or user ID changes
+  }, [isAuthenticated, user?._id]);
 
-  // 🔥 Real-time updates
+  // 🔌 Join personal room
   useEffect(() => {
-    socket.on("notification", (data) => {
-      setNotifications((prev) => [data, ...prev]);
-    });
+    if (user?._id) {
+      socket.emit("join", user._id);
+    }
+  }, [user]);
 
-    return () => socket.off("notification");
+  // 🔔 Real-time notifications
+  useEffect(() => {
+    const handleNotification = (data) => {
+      setNotifications((prev) => {
+        const exists = prev.find((n) => n._id === data._id);
+        if (exists) return prev;
+        return [data, ...prev];
+      });
+    };
+
+    socket.on("notification", handleNotification);
+
+    return () => {
+      socket.off("notification", handleNotification);
+    };
   }, []);
 
-  // ✅ Unread count
+  // 🔢 Unread count
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
@@ -96,18 +111,21 @@ function Navbar() {
             </>
           ) : (
             <>
-              {/* 🔔 NOTIFICATION BELL */}
+              {/* 🔔 Notification Bell */}
               <div className="nav-icons">
-  <div className="notification-wrapper" onClick={() => navigate("/notifications")}>
-    <Bell size={22} />
+                <div
+                  className="notification-wrapper"
+                  onClick={() => navigate("/notifications")}
+                >
+                  <Bell size={22} />
 
-    {unreadCount > 0 && (
-      <span className="notification-badge">
-        {unreadCount > 9 ? "9+" : unreadCount}
-      </span>
-    )}
-  </div>
-</div>
+                  {unreadCount > 0 && (
+                    <span className="notification-badge">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  )}
+                </div>
+              </div>
 
               {/* USER */}
               <div className="nav-right">

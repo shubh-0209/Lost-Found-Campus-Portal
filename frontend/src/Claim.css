@@ -196,3 +196,125 @@
       font-size: 13px;
     }
   }
+
+  .claims-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+  }
+  
+  .claims-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .claim-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    transition: 0.2s ease;
+  }
+  
+  .claim-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .claim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .label {
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  .value {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  
+  .status.pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .status.accepted {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  .status.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  
+  .answers-section {
+    margin-bottom: 15px;
+  }
+  
+  .answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .answer-item {
+    background: #f9fafb;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .answer-key {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  .answer-value {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .btn.accept {
+    background: #10b981;
+    color: white;
+  }
+  
+  .btn.accept:hover {
+    background: #059669;
+  }
+  
+  .btn.reject {
+    background: #ef4444;
+    color: white;
+  }
+  
+  .btn.reject:hover {
+    background: #dc2626;
+  }

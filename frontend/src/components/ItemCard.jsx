@@ -30,6 +30,29 @@ const ItemCard = ({ item, currentUser }) => {
 console.log("USER id:", currentUser?._id);
 // console.log("FULL ITEM:", item);
 
+const handleDelete = async (e) => {
+  e.stopPropagation(); // 🔥 prevents unwanted navigation
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`http://localhost:5000/api/items/${item._id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    // 🔥 remove item from UI (you'll pass this from parent)
+    window.location.reload(); // quick fix (not best, but works)
+  } catch (err) {
+    console.error(err);
+  }
+};
+
   return (
     <div className="card">
       {hasImage && (
@@ -78,11 +101,11 @@ console.log("USER id:", currentUser?._id);
             {/* 🔥 CONDITIONAL BUTTON */}
             {isOwner ? (
               <button
-                className="card-btn danger"
-                onClick={() => navigate(`/delete/${item._id}`)} // or call delete API
-              >
-                Delete
-              </button>
+              className="card-btn danger"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
             ) : (
               <button
                 className="card-btn primary"

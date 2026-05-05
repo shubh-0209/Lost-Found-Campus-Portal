@@ -25,6 +25,8 @@ const auth = async (req, res, next) => {
   } catch (err) {
     res.status(401).json({ message: "Invalid token" });
   }
+  // console.log("JWT SECRET:", process.env.JWT_SECRET);
+  // console.log("AUTH HEADER:", req.headers.authorization);
 };
 
 module.exports = auth;

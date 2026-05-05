@@ -16,6 +16,27 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const notification = await Notification.findById(req.params.id);
+
+    if (!notification) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    // 🔐 only owner can delete
+    if (notification.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    await notification.deleteOne();
+
+    res.json({ message: "Notification deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // ✅ Mark as read
 router.put("/:id/read", auth, async (req, res) => {
   try {

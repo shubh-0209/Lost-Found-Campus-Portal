@@ -51,6 +51,11 @@ const itemSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    // status: {
+    //   type: String,
+    //   enum: ["available", "claimed"],
+    //   default: "available"
+    // }
   },
   { timestamps: true }
 );

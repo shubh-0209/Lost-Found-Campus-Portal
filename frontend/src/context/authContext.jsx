@@ -1,39 +1,61 @@
 import React, { createContext, useState, useEffect } from "react";
+import { connectSocket, disconnectSocket } from "../socket";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔄 Restore session on refresh
   useEffect(() => {
-
     const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (storedUser && token) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+
+        // ✅ Connect socket once
+        connectSocket(parsedUser._id);
+      } catch (err) {
+        console.error("Invalid stored user:", err);
+        localStorage.clear();
+      }
+    } else {
+      localStorage.clear();
     }
 
     setLoading(false);
 
+    // 🔥 Cleanup on unmount
+    return () => {
+      disconnectSocket();
+    };
   }, []);
 
+  // 🔐 Login
   const login = (userData, token) => {
-
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
 
     setUser(userData);
+
+    // ✅ Connect socket
+    connectSocket(userData._id);
   };
 
+  // 🚪 Logout
   const logout = () => {
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-
+    localStorage.clear();
     setUser(null);
+
+    // ✅ Disconnect socket
+    disconnectSocket();
   };
+
+  const token = localStorage.getItem("token");
 
   return (
     <AuthContext.Provider
@@ -41,8 +63,8 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
-        isAuthenticated: !!user,
-        loading
+        isAuthenticated: !!user && !!token,
+        loading,
       }}
     >
       {children}

@@ -7,9 +7,9 @@ function Home() {
     <div className="home">
 
       <section className="hero">
-        <h1>Lost Something on Campus?</h1>
+        <h1>Found Something on Campus?</h1>
         <p>
-          Report lost items, find what you've misplaced, and help others
+          Report found items, find what you've misplaced, and help others
           reconnect with their belongings.
         </p>
 

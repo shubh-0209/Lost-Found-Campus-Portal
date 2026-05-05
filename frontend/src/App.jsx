@@ -14,6 +14,8 @@ import ItemDetails from "./pages/ItemDetails";
 import Notifications from "./pages/Notifications"; 
 import ClaimItem from "./pages/ClaimItem";
 import ClaimsPage from "./pages/ClaimsPage";
+import ClaimSuccess from "./pages/ClaimSuccess";
+
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,20 +27,7 @@ function App() {
   const { isAuthenticated, user } = useContext(AuthContext);
 
   // 🔥 Register user to socket
-  useEffect(() => {
-    if (isAuthenticated && user?._id) {
-      socket.connect(); // ensure connection
-
-      socket.emit("register", user._id);
-
-      console.log("✅ Socket connected for user:", user._id);
-    }
-
-    return () => {
-      socket.disconnect(); // cleanup
-    };
-  }, [isAuthenticated, user]);
-
+ 
   // 🔔 Listen for real-time notifications
   useEffect(() => {
     socket.on("notification", (data) => {
@@ -54,6 +43,8 @@ function App() {
       socket.off("notification");
     };
   }, []);
+
+  
 
   return (
     <>
@@ -117,11 +108,15 @@ function App() {
     </PrivateRoute>
   }
 />
+
 <Route path="/claims/:itemId" element={<ClaimsPage />} />
 
         <Route path="/item/:id" element={<ItemDetails />} />
+        <Route path="/claim-success/:id" element={<ClaimSuccess />} />
+
       </Routes>
 
+    
       <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
